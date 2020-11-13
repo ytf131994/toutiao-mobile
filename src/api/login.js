@@ -18,3 +18,9 @@ export const getUser = () => {
         method: 'GET'
     })
 }
+export const getChannels = () => {
+    return request({
+        url: '/app/v1_0/user/channels',
+        method: 'GET'
+    })
+}

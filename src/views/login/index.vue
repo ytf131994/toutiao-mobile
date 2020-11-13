@@ -64,7 +64,8 @@ export default {
           console.log(res)
           this.$store.commit('setUser', res.data.data)
           Toast.success('登录成功')
-          this.$router.back()
+          this.$store.commit('removeCachePages', 'layoutIndex')
+          this.$router.push(this.$route.query.redirect || '/')
       } catch (error) {
         console.log(error)
         Toast.fail('手机号或密码错误')

@@ -4,7 +4,7 @@
       <van-cell title="单元格" value="内容" center class="base_info" :border="false">
           <van-image round fit="cover" class="avter" slot="icon" width="66px" height="66px" :src="userList.photo" />
           <div slot="title" class="name">{{userList.name}}</div>
-          <van-button round class="update_btn" size="small">编辑资料</van-button>
+          <van-button round class="update_btn" size="small" to="/setting">编辑资料</van-button>
       </van-cell>
          <van-grid :border="false" class="data-info">
       <van-grid-item><div slot="text" class="data-info-item"><div class="text_count"><div class="span">{{userList.art_count}}</div><div class="text">头条</div></div></div></van-grid-item>
@@ -14,7 +14,12 @@
       </van-grid>
     </van-cell-group>
     <div class="no-login" v-else>
-      <img class="phone" @click="$router.push('/login')" src="./手机.png" width="66px" height="66px" alt="">
+      <img class="phone" @click="$router.push({
+        name: 'login',
+        query: {
+          redirect: '/my'
+        }
+      })" src="./手机.png" width="66px" height="66px" alt="">
       <div class="login">登录/注册</div>
     </div>
       <van-grid column-num=2 class="nav-grid md-4">
@@ -22,14 +27,13 @@
         <van-grid-item icon="browsing-history-o" class="nav-grid-item" text="历史" />
       </van-grid>
       <van-cell title="消息通知" is-link to="" />
-      <van-cell class="md-4" title="小智同学" is-link to="" />
+      <van-cell class="md-4" title="小智同学" is-link to="/user-char" />
       <van-cell class="signOut" v-if="user" title="退出登录" @click="signOut"  />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import { removeItem } from '@/utils/storage'
 import { Dialog } from 'vant'
 import { getUser } from '@/api/login'
 export default {
@@ -48,8 +52,7 @@ export default {
       message: '退出当前头条账号，将不能同步收藏，发布评论和云端分享'
     })
       .then(() => {
-        removeItem('toutiao-user')
-        this.$router.go(0)
+        this.$store.commit('setUser', null)
       })
       .catch(() => {
         // on cancel
